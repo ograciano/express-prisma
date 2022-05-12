@@ -136,4 +136,63 @@ app.delete('/ajolonautas/:id', async(req, res=response) => {
     }
 });
 
+app.get('/missionCommander', async (req, res=response) => {
+    try {
+        const allMissionCommander = await prisma.missionCommander.findMany({});
+        res.json(allMissionCommander);
+    } catch (e) {
+        console.log(e);
+        res.json({message: 'Error en el servidor'})
+    }
+})
+
+app.get('/missionCommander/:id', async (req, res=response) => {
+    try {
+        const {id} = req.params;
+        const missionCommander = await prisma.missionCommander.findUnique({where: {id: parseInt(id)}});
+        res.json(missionCommander);
+    } catch (e) {
+        console.log(e);
+        res.json({message: 'Error en el servidor'})
+    }
+});
+
+app.post('/missionCommander', async(req, res=response) => {
+    try {
+        const {name, username, mainStack} = req.body;
+        const missionCommander = {name, username, mainStack};
+        const message = 'missionCommander Creado';
+        await prisma.missionCommander.create({data:missionCommander});
+        return res.json({message});
+    } catch (e) {
+        console.log(e);
+        res.json.status(500).json({message: 'Error en el servidor'});
+    }
+});
+
+app.put('/missionCommander/:id', async(req, res=response) => {
+    try {
+        const {id} = req.params;
+        const {mainStack} = req.body;
+        const message = 'missionCommander Actualizado';
+        await prisma.missionCommander.update({where: {id: parseInt(id)}, data:{mainStack}});
+        return res.json({message});
+    } catch (e) {
+        console.log(e);
+        res.json.status(500).json({message: 'Error en el servidor'});
+    }
+});
+
+app.delete('/missionCommander/:id', async(req, res=response) => {
+    try {
+        const {id} = req.params;
+        const message = 'missionCommander Eliminado';
+        await prisma.missionCommander.delete({where: {id: parseInt(id)}});
+        return res.json({message});
+    } catch (e) {
+        console.log(e);
+        res.json.status(500).json({message: 'Error en el servidor'});
+    }
+});
+
 app.listen(port, () => { console.log(`Escuchando servidor en el puerto ${port}`);});
