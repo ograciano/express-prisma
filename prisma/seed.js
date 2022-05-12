@@ -78,3 +78,51 @@ const prisma = new PrismaClient();
         await prisma.$disconnect();
     }
 })();
+
+(async function main() {
+    try {
+        const ajolonauta = await prisma.ajolonauta.upsert({
+            where: { name: 'Oscar' },
+            update: {},
+            create: {
+                name: 'Oscar',
+                lang: 'español',
+                missionCommander: 'Carlo'
+            },
+        });
+        const ajolonauta1 = await prisma.ajolonauta.upsert({
+            where: { name: 'Luis' },
+            update: {},
+            create: {
+                name: 'Luis',
+                lang: 'Ingles',
+                missionCommander: 'Carlo'
+            },
+        });
+        const ajolonauta2 = await prisma.ajolonauta.upsert({
+            where: { name: 'Alex' },
+            update: {},
+            create: {
+                name: 'Alex',
+                lang: 'español',
+                missionCommander: 'Carlo'
+            },
+        });
+        const ajolonauta3 = await prisma.ajolonauta.upsert({
+            where: { name: 'Juan' },
+            update: {},
+            create: {
+                name: 'Juan',
+                lang: 'Ingles',
+                missionCommander: 'Carlo'
+            },
+        });
+
+        console.log('Create 4 explorers');
+    } catch (e) {
+        console.error(e);
+        process.exit(1);
+    } finally {
+        await prisma.$disconnect();
+    }
+})();
